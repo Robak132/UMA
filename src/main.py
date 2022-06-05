@@ -28,10 +28,10 @@ if __name__ == "__main__":
     outcome = wrap_labels_with_predictions_to_dataframe(labels, predictions)
     print(outcome)
 
-    outcome.to_csv('breast_tissue.csv')
-    print(pd.read_csv('breast_tissue.csv', index_col=0))
+    outcome.to_csv('../data/predictions/breast_tissue.csv')
+    print(pd.read_csv('../data/predictions/breast_tissue.csv', index_col=0))
     print(calculate_accuracy(predictions, labels))
-    print(calculate_accuracy_from_dataframe(pd.read_csv('breast_tissue.csv', index_col=0)))
+    print(calculate_accuracy_from_dataframe(pd.read_csv('../data/predictions/breast_tissue.csv', index_col=0)))
 
 
 
