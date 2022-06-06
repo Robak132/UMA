@@ -5,8 +5,8 @@ class DecisionTreeClassifier:
     def __init__(self):
         self.clf = tree.DecisionTreeClassifier()
 
-    def train(self, X, Y):
-        self.clf.fit(X, Y)
+    def train(self, x, y):
+        self.clf.fit(x, y)
 
-    def predict(self, X):
-        return self.clf.predict(X) #TODO sprawdzić czy to się tak ładnie zwróci po kolei
+    def predict(self, x):
+        return self.clf.predict(x)  # TODO sprawdzić czy to się tak ładnie zwróci po kolei

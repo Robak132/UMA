@@ -1,6 +1,7 @@
 from loaders import *
 from model.decision_tree import DecisionTreeClassifier
-from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy, calculate_accuracy_from_dataframe
+from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
+from utils import calculate_accuracy_from_dataframe
 import pandas as pd
 import numpy as np
 
