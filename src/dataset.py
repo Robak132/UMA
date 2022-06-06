@@ -1,32 +1,74 @@
 import pandas as pd
 
-from utils import split_into_train_test
-
 
 class Dataset:
+    name = ""
+
     def __init__(self, csv):
         self.x, self.y = self.load_dataset(csv)
-        self.x_train, self.x_test, self.y_train, self.y_test = split_into_train_test(self.x, self.y, 0.3)
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
-        pass
+        raise Exception("This is an abstract method")
 
 
 class BreastTissueDataset(Dataset):
+    name = "Breast Tissue Dataset"
+
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
         # 10 attributes: 9 features + 1 class attribute under "Class" column
-        df = pd.read_csv("../data/extracted/breast_tissue.csv", delimiter=";")
+        df = pd.read_csv(csv)
         x = df.drop(['Case #', 'Class'], axis='columns')
         y = df['Class']
         return x, y
 
-class BreastTissueDataset(Dataset):
+
+class CarEvaluationDataset(Dataset):
+    name = "Car Evaluation Dataset"
+
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
-        # 10 attributes: 9 features + 1 class attribute under "Class" column
-        df = pd.read_csv("../data/extracted/breast_tissue.csv", delimiter=";")
-        x = df.drop(['Case #', 'Class'], axis='columns')
+        # 1728 instances
+        # acceptability - last column
+        df = pd.read_csv(csv)
+        x = df.drop(['acceptability'], axis='columns')
+        x = pd.get_dummies(x)
+        y = df['acceptability']
+        return x, y
+
+
+class TitanicDataset(Dataset):
+    name = "Titanic Dataset"
+
+    @staticmethod
+    def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
+        df = pd.read_csv(csv)
+        df = df.drop(['PassengerId', 'Name', 'Ticket', 'Cabin'], axis='columns')
+        df = pd.get_dummies(df)
+        df.dropna(inplace=True)
+        x = df.drop(['Survived'], axis='columns')
+        y = df['Survived']
+        return x, y
+
+
+class WineDataset(Dataset):
+    name = "Wine Dataset"
+
+    @staticmethod
+    def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
+        df = pd.read_csv(csv)
+        x = df.drop(['Class'], axis='columns')
         y = df['Class']
+        return x, y
+
+
+class RedWineQualityDataset(Dataset):
+    name = "Red Wine Quality Dataset"
+
+    @staticmethod
+    def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
+        df = pd.read_csv(csv)
+        x = df.drop(['quality'], axis='columns')
+        y = df['quality']
         return x, y

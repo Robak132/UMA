@@ -1,6 +1,6 @@
 import random
 
-from dataset import BreastTissueDataset
+from dataset import *
 from loaders import *
 from model.decision_tree import DecisionTreeClassifier
 from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
@@ -23,9 +23,16 @@ if __name__ == "__main__":
     # parameters = {"mut_prob": [0.5, 0.1], "cross_prob": [0.3, 0.2]}
     # calculate_for_all_combinations(parameters)
 
-    breastTissueDataset = BreastTissueDataset("../data/extracted/breast_tissue.csv")
+    datasets = [
+        BreastTissueDataset("../data/extracted/breast_tissue.csv"),
+        CarEvaluationDataset("../data/extracted/car_evaluation.csv"),
+        TitanicDataset("../data/extracted/titanic.csv"),
+        WineDataset("../data/extracted/wine.csv"),
+        RedWineQualityDataset("../data/extracted/winequality_red.csv"),
+    ]
 
-    normal_tree = DecisionTreeClassifier()
-    normal_tree.train(breastTissueDataset)
-    accuracy, result = normal_tree.calc_accuracy(breastTissueDataset)
-    print(accuracy)
+    print("Standard Decision Tree")
+    for dataset in datasets:
+        normal_tree = DecisionTreeClassifier()
+        accuracy = normal_tree.calc_accuracy(dataset)
+        print(f"{dataset.name} accuracy: {accuracy}")
