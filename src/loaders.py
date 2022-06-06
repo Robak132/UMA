@@ -1,5 +1,7 @@
 import pandas
 
+# TODO: Remove legacy code
+
 
 def load_dataset(path):
     return pandas.read_csv(path)
@@ -16,13 +18,6 @@ def load_breast_tissue():
 
 def load_car_evaluation():
     df = pandas.read_csv("../data/extracted/car_evaluation.csv")
-    return df
-
-
-def load_orders_data():
-    # trzeba było e z ogonkiem zamienić na e
-    df = pandas.read_csv('../data/extracted/orders_data.csv')
-    # Ostatnia kolumna do przewidywania
     return df
 
 
