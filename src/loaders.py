@@ -1,8 +1,9 @@
 import pandas
 
 
-def load_dataset(path, sep):
+def load_dataset(path):
     return pandas.read_csv(path)
+
 
 def load_breast_tissue():
     # 106 instances

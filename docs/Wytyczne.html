@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- saved from url=(0052)http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>UMA - projekt</title>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1017.0" data-gr-ext-installed=""> 
+
+<table border="0" cellpadding="2" cellspacing="2">
+<tbody>
+   <tr><td><a href="http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html#TERMINY">Terminy</a></td></tr>
+   <tr><td><a href="http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html#WAZ_INFO">Ważne informacje</a></td></tr>
+   <tr><td><a href="http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html#DOK_WST">Dokumentacja wstępna</a></td></tr>   
+   <tr><td><a href="http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html#PROJ">Oddawanie projektów</a></td></tr>
+   <tr><td><a href="http://staff.elka.pw.edu.pl/~rbiedrzy/UMA/index.html#OCENA">Sposób oceny</a></td></tr>
+</tbody>
+</table>
+
+<h1>Szanowni Państwo, przed zadaniem pytania uprzejmie proszę o zapoznanie się z zawartością niniejszej strony, w tym z informacjami o  <a href="http://staff.elka.pw.edu.pl/~rbiedrzy/plan.html">możliwościach konsultacji</a>.</h1>
+<h2>Ważne</h2>
+<p>W ramach projektu z UMA należy wykonać <b>własną</b> implementację wskazanego w temacie zadania algorytmu. Należy również <b>zbadać</b> własności stworzonego algorytmu.
+ W ramach badań należy wypróbować różne zestawy parametrów i/lub dokonać prostych modyfikacji algorytmu, po czym rzetelnie 
+porównać osiągnięte wyniki i wyciągnąć wnioski. Jeżeli w ramach projektu należy dokonać prostej modyfikacji standardowego algorytmu to uzyskane wyniki należy <b>porównać z wynikami klasycznej wersji zmodyfikowanego algorytmu</b>.</p>
+
+
+<h2><a name="TERMINY">Terminy (do):</a></h2>
+<ul>
+<li>03 IV - wybór tematu projektu,</li>
+<li>17 IV - przysłanie założeń wstępnych (dokumentacji wstępnej), </li>
+<li>12 VI - przysłanie kodu oraz dokumentacji końcowej, </li>
+<li>15 VI - ostateczny termin oddawania projektów, po 12 VI naliczana jest kara za spóźnienie.</li>
+</ul>
+Za opóźnienia przewidziano kary podane na stronie <a href="http://elektron.elka.pw.edu.pl/~pcichosz/uma/uma-projekt-zasady.html">prowadzącego przedmiot</a>. 
+Uznaję, że termin został dotrzymany, jeśli do północy wskazanego dnia otrzymam e-mail z odpowiednimi załącznikami.
+
+
+<h2><a name="WAZ_INFO">Ważne informacje</a></h2><a name="WAZ_INFO">
+</a><ul><a name="WAZ_INFO">
+</a><li><a name="WAZ_INFO">Proszę zapoznać się z zawartością strony </a><a href="http://elektron.elka.pw.edu.pl/~pcichosz/uma/uma-projekt-zasady.html">prowadzącego przedmiot</a>.</li>
+<li>Projekty realizowane są w zespołach dwuosobowych. <b>Zapisów dokonujemy przy użyciu systemu <a href="http://eve.ii.pw.edu.pl:9009/">zapisy</a></b> (uwierzytelnianie wydziałowe). Po zalogowaniu należy wybrać przedmiot "[UMA] Uczenie Maszynowe". System ułatwia również znalezienie drugiego członka zespołu (widać kto zapisał się samotnie). O przydziale tematu decyduje <b>kolejność zgłoszeń</b> (dopisywanie się drugiego zespołu do tego samego tematu nie ma sensu).</li>
+<li>Dane do większości eksperymentów można pobrać z Internetu,  np. ze strony 
+<a href="http://archive.ics.uci.edu/ml/">UCI</a> lub <a href="https://www.kaggle.com/">Kaggle</a> (wymaga utworzenia konta).</li>
+
+
+<li>Program można zaimplementować w jednym z darmowych języków programowania - w kolejności preferencji: R, Python, C++, C. Programy muszą działać pod kontrolą systemu Ubuntu Linux 22.04.</li>
+<li>Dokumentację wstępną oraz końcową proszę przysłać w formie elektronicznej (rafal.biedrzycki [at] pw.edu.pl)</li>
+<li>Wszelka korespondencja e-mail związana z przedmiotem powinna mieć w temacie e-maila napis <b>UMA</b>, po czym powinna wystąpić dalsza część tematu.
+</li><li>Podczas implementacji może się okazać, że pewnych szczegółów niektórych algorytmów nie podano na wykładzie. Szczegóły te należy zaimplementować tak, jak podano w artykule naukowym opisującym dany algorytm. W przypadku trudności w znalezieniu/zrozumieniu
+ artykułu należy doprecyzować wedle własnego uznania (należy opisać to w dokumentacji).</li>
+
+<li>Zaproponowane w tematach projektu modyfikacje metod klasycznych mogą prowadzić do uzyskania gorszych wyników na wielu zbiorach danych. W przypadku uzyskania gorszych wyników na wybranym zbiorze należy zastanowić się (i napisaś w dokumentacji) co zmienia wprowadzona modyfikacja i dla jakiego zbioru danych może mieć ona sens - czy da się taki zbiór znaleźć lub wygenerować?</li>
+<li><b>Nie można wyciągać wniosków na podstawie jednego uruchomienia metody wykorzystującej liczby pseudolosowe</b>. Należy pracować na zagregowanych wynikach z min. 25 uruchomień. Dla takich algorytmów podaje się średnią, odchylenia standardowe, najlepszy i najgorszy wynik. Należy o tym napisać już w dokumentacji wstępnej.</li>
+</ul>
+
+ 
+
+
+<h1><a name="DOK_WST">Dokumentacja wstępna</a></h1>
+W założeniach wstępnych projektu należy doprecyzować tematy, a oprócz tego:
+<ul>
+<li>Zawrzeć precyzyjny opis algorytmów, które będą wykorzystane, wraz z przykładowymi obliczeniami. Na podstawie tego opisu nie znający tematyki przedmiotu programista powinien być w 
+stanie wykonać poprawną implementację.</li>
+<li>Przedstawić plan eksperymentów.</li>
+<li>Należy wybrać i opisać zbiory danych (w tym podać liczbę przykładów poszczególnych klas), które będą używane do badań, należy określić jak zostanie wyłoniony i użyty zbiór trenujący.</li> 
+</ul>
+Dokumentację wstępną należy wysłać e-mailem. W temacie proszę napisać <b>UMA</b>, a załącznik proszę nazwać tak jak imię i nazwisko autora, np. JanKowalski.pdf.
+
+
+<h1><a name="PROJ">Oddawanie projektów</a></h1>
+Oddawanie projektów przebiega w sposób następujący: Student wysyła e-mail z załącznikiem zawierającym wszystko to, co tej pory powstało w związku z projektem, po czym czeka na ocenę lub na zaproszenie na rozmowę. W temacie e-maila proszę koniecznie wpisać UMA. Sprawdzanie projektów zwykle trwa kilka dni, aby uniknąć pytań w stylu "czy mój e-mail dotarł do Pana" można przy wysyłaniu projektu zaznaczyć opcję "żądaj potwierdzenia doręczenia".
+
+<p>Dokumentacja końcowa musi być samowystarczalnym dokumentem, dlatego należy w niej również zawrzeć opis algorytmów oraz opis zbiorów danych.</p>  
+
+<p>Reguły biurokracji wymagają aby w przesłanym archiwum wraz z projektem końcowym przysłać również wszystko to, co się wcześniej wytworzyło. Archiwum powinno nazywać się tak jak imię i nazwisko autora, np. JanKowalski.zip.
+W archiwum powinien być porządek, dokumentacja końcowa niech nazywa się "dokumentacja końcowa.pdf", dokumentacja wstępna "dokumentacja wstępna.pdf", a w katalogu ,,kod'' niech znajduje się kod rozwiązania zadania oraz skrypty używane do przeprowadzenia eksperymentów. Oprócz tego w archiwum powinien istnieć plik ,,temat projektu.txt'' zawierający temat projektu w formie takiej jak podałem.</p>
+<p><strong>Nie należy używać formatu .rar</strong> do pakowania kodu projektów przed wysłaniem. Preferowany format to .zip.</p>
+
+<p>Rozsądnie jest pochwalić się wynikami prac na kilka tygodni przed oficjalnym oddaniem projektu. Dokumentację wraz z kodem proszę przesłać mi e-mailem, pisząc "konsultacje UMA" w temacie e-maila. Dzięki temu mają Państwo szansę poznać moje uwagi dotyczące projektu. Uwagi te otrzymają również Państwo przy okazji oceny projektu - wtedy jednak  będą one okupione utratą punktów. Przysłanie projektu do oceny powoduje otrzymanie oceny - wtedy na konsultacje jest już za późno. Nie dopuszczam poprawiania ocen.</p>
+
+
+<p>Tam gdzie nie podano nazwy zbioru danych należy wybrać i użyć kilku zbiorów danych (UCI, kaggle).</p>
+
+
+<h2><a name="OCENA">Sposób oceny</a></h2><a name="OCENA">
+Na ocenę z projektu (50 punktów) składa się:
+<ol>
+<li>ocena założeń wstępnych (10 p.),</li>
+<li>ocena implementacji (jakość, przydatność, uniwersalność, testy) (25 p.),</li>
+<li>ocena badań eksperymentalnych i dokumentacji końcowej (15 p.).</li>
+</ol>
+Szczegóły oceny:
+<ul>
+<li>Kod programu powinien być czytelny (samodokumentujący się). Fragmenty z konieczności niezrozumiałe (np. użycie skomplikowanego wzoru matematycznego) należy opatrzyć komentarzem. </li>
+<li>Należy się upewnić, że implementacja nie zawiera błędów. W tym celu jej wyniki należy porównać z wynikami metody referencyjnej. W przypadku braku metody referencyjnej, działanie algorytmu można sprawdzić ręcznie na niewielkim zbiorze danych - najlepiej napisać testy jednostkowe.</li> 
+<li>W nagłówku każdego pliku z kodem należy umieścić informację o autorze.</li>
+<li>Zaimplementowany algorytm musi być uniwersalny - nie może być związany z konkretnym zbiorem danych.</li>
+<li>Należy zadbać o odpowiedni podział kodu na pliki. Implementacja algorytmu musi się znaleźć w jednym pliku. Funkcja pomocnicza (np. służąca do raportowania wyników) powinna być w innym pliku. W kolejnym pliku powinno znaleźć się wywołanie algorytmu.</li>
+
+<li>W części badawczej należy zamieścić opis stosowanej procedury eksperymentalnej i używanych danych, uzyskane wyniki, dyskusję wyników i wnioski.</li>
+<li>Należy zbadać jak algorytm zachowuje się w różnych przypadkach, np. dla zbiorów o różnym charakterze, przy zmianie parametrów.</li>
+<li>Przez wyniki rozumie się zestawienie tabelaryczne. </li>
+<li>Podawanie wielu cyfr po przecinku nie ma sensu. Zwykle podaje się 2 cyfry po przecinku.</li>
+<li>Jeżeli w zbiorze danych wyróżniony był zbiór testowy to należy podać dokładność klasyfikacji na tym zbiorze oraz inne miary wyjaśniające z klasyfikacją czego był problem - np. tabelę pomyłek ("confusion matrix"). Jeżeli nie było zbioru testowego to stosuje się walidację krzyżową.</li>
+ 
+<li>Jeśli w dokumentacji ktoś napisał w stylu "widać że wraz ze wzrostem A rośnie B" to są to bardzo płytkie wnioski, aby je pogłębić należy wyjaśnić dlaczego, przeprowadzić dodatkowe badania, ustosunkować się całościowo do metody - "nadaje się do zadań typu ..., nie nadaje się ponieważ ...". </li>
+<li>Proszę napisać czego nauczyli się Państwo dzięki realizacji tego projektu.</li>
+<li>Dokumentacja powinna być oficjalnym, dopracowanym dokumentem. W dobie automatycznego sprawdzania pisowni pojawienie się literówek w dokumentacjach jest niedopuszczalne. Proszę zadbać o prawidłowe używanie poznanego na wykładach słownictwa (jeśli nie było jeszcze o czymś mowy na wykładzie to należy zajrzeć do zalecanej literatury, w ostateczności do Wikipedii). </li>
+</ul>
+
+ 
+
+
+
+
+
+
+
+
+
+</a></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
