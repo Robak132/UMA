@@ -3,6 +3,7 @@ import random
 from dataset import *
 from loaders import *
 from model.decision_tree import DecisionTreeClassifier
+from model.evolutionary_tree import EvolutionaryTreeClassifier
 from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
 from utils import calculate_accuracy_from_dataframe
 import pandas as pd
@@ -35,4 +36,11 @@ if __name__ == "__main__":
     for dataset in datasets:
         normal_tree = DecisionTreeClassifier()
         accuracy = normal_tree.calc_accuracy(dataset)
+        print(f"{dataset.name} accuracy: {accuracy}")
+
+    print()
+    print("Evolutionary Decision Tree")
+    for dataset in datasets:
+        tree = EvolutionaryTreeClassifier(dataset)
+        accuracy = tree.calc_accuracy(dataset)
         print(f"{dataset.name} accuracy: {accuracy}")

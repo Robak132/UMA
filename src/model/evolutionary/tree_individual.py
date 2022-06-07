@@ -3,58 +3,62 @@ from utils import calculate_accuracy
 
 
 class TreeIndividual:
-    def __init__(self, X, Y):
-        self.root = DivisionNode(X, Y)
+    def __init__(self, x, y, division_node_prob=0.3, max_depth=20):
+        self.root = DivisionNode(x, y, division_node_prob, max_depth)
+        self.score = 0
 
-    def train(self, X, Y):
-        predictions = self.predict(X)
-        print(calculate_accuracy(Y, predictions))
-
-    def predict(self, X):
+    def predict(self, x):
         predictions = []
-        for index, row in X.iterrows():
-            predictions.append(self.predict_one(row))
+        for index, row in x.iterrows():
+            predictions.append(self.root.proceed(row))
         return predictions
 
-    def predict_one(self, record):
-        return self.root.proceed(record)
+    def evaluate(self, x, y):
+        self.score = calculate_accuracy(y, self.predict(x))
+
+    def __repr__(self):
+        return f"Tree(score = {self.score})"
 
 
-def create_random_node(X, Y):
-    if np.random.rand() < 0.3:
-        return DivisionNode(X, Y)
-    else:
-        return LeafNode(Y)
+class AbstractNode:
+    def proceed(self, record):
+        raise Exception("This is an abstract method.")
 
 
-class DivisionNode:
-    def __init__(self, X, Y):
-        self.left = create_random_node(X, Y)
-        self.right = create_random_node(X, Y)
-        self.division = Division(X)
+class DivisionNode(AbstractNode):
+    def __init__(self, x, y, division_node_prob, depth):
+        self.division_node_prob = division_node_prob
+        self.depth = depth
+
+        self.left = self.create_random_node(x, y)
+        self.right = self.create_random_node(x, y)
+
+        self.attribute = np.random.choice(x.columns)
+        self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
 
     def proceed(self, record):
-        if self.division.proceed(record):
+        if record[self.attribute] > self.value:
             return self.left.proceed(record)
         else:
             return self.right.proceed(record)
 
+    def create_random_node(self, x, y):
+        if np.random.rand() < self.division_node_prob and self.depth >= 0:
+            return DivisionNode(x, y, self.division_node_prob, self.depth-1)
+        else:
+            return LeafNode(y, self.depth-1)
 
-class LeafNode:
-    def __init__(self, Y):
-        self.value = np.random.choice(Y)
+    def __repr__(self):
+        return f"Node({self.value}, ({self.left.__repr__()}, {self.right.__repr__()})"
+
+
+class LeafNode(AbstractNode):
+    def __init__(self, y, depth):
+        self.value = np.random.choice(y)
+        self.depth = depth
 
     def proceed(self, record):
         return self.value
 
-
-class Division:
-    def __init__(self, X):
-        self.attribute = np.random.choice(X.columns)
-        self.value = np.random.uniform(X[self.attribute].min(), X[self.attribute].max())
-
-    def proceed(self, record):
-        if record[self.attribute] > self.value:
-            return True
-        else:
-            return False
+    def __repr__(self):
+        return f"Node({self.value})"

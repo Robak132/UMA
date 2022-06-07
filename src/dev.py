@@ -1,16 +1,20 @@
+import random
+
+from dataset import BreastTissueDataset
 from loaders import *
 from model.evolutionary.tree_individual import TreeIndividual
 # from model.evolutionary_tree import EvolutionaryTreeClassifier
 import numpy as np
 
-import sys
-sys.setrecursionlimit(10000)
 
 if __name__ == "__main__":
-    X, Y = load_breast_tissue()
-    tree = TreeIndividual(X, Y)
-    tree.train(X, Y)
-    print(tree.predict(X))
+    random.seed(2137)
+    np.random.seed(2137)
+
+    dataset = BreastTissueDataset("../data/extracted/breast_tissue.csv")
+
+    trees.sort(key=lambda x: x.score)
+    pass
     # attr = np.random.choice(X.columns)
     # print(X[attr])
     # print(X[attr].min())
