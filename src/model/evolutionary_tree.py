@@ -1,6 +1,5 @@
 from model.classifier import AbstractClassifier
 from model.evolutionary.tree_individual import TreeIndividual
-from utils import calculate_accuracy
 
 
 class EvolutionaryTreeClassifier(AbstractClassifier):

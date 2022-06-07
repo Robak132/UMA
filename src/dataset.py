@@ -13,7 +13,7 @@ class Dataset:
 
 
 class BreastTissueDataset(Dataset):
-    name = "Breast Tissue Dataset"
+    name = "breast_tissue"
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -25,7 +25,7 @@ class BreastTissueDataset(Dataset):
 
 
 class CarEvaluationDataset(Dataset):
-    name = "Car Evaluation Dataset"
+    name = "car_evaluation"
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -39,7 +39,7 @@ class CarEvaluationDataset(Dataset):
 
 
 class TitanicDataset(Dataset):
-    name = "Titanic Dataset"
+    name = "titanic"
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -53,7 +53,7 @@ class TitanicDataset(Dataset):
 
 
 class WineDataset(Dataset):
-    name = "Wine Dataset"
+    name = "wine"
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -64,7 +64,7 @@ class WineDataset(Dataset):
 
 
 class RedWineQualityDataset(Dataset):
-    name = "Red Wine Quality Dataset"
+    name = "red_wine_quality"
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:

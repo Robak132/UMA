@@ -1,13 +1,31 @@
 import random
+import threading
 
 from dataset import *
-from loaders import *
 from model.decision_tree import DecisionTreeClassifier
 from model.evolutionary_tree import EvolutionaryTreeClassifier
-from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
-from utils import calculate_accuracy_from_dataframe
-import pandas as pd
 import numpy as np
+
+
+def test_evolutionary_tree(dataset):
+    tree = EvolutionaryTreeClassifier(dataset)
+    stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
+    print(f"{dataset.name} [evolution] finished\n"
+          f"mean: {stats[0]}\n"
+          f"standard_deviation: {stats[1]}\n"
+          f"min: {stats[2]}\n"
+          f"max: {stats[3]}\n\n", end="", flush=True)
+
+
+def test_classic_tree():
+    normal_tree = DecisionTreeClassifier()
+    stats = normal_tree.save_stats(dataset, f"../output/{dataset.name}/classic/stats.txt")
+    print(f"{dataset.name} [standard] finished\n"
+          f"mean: {stats[0]}\n"
+          f"standard_deviation: {stats[1]}\n"
+          f"min: {stats[2]}\n"
+          f"max: {stats[3]}\n\n", end="", flush=True)
+
 
 if __name__ == "__main__":
     random.seed(2137)
@@ -32,15 +50,12 @@ if __name__ == "__main__":
         RedWineQualityDataset("../data/extracted/winequality_red.csv"),
     ]
 
-    print("Standard Decision Tree")
+    threads = []
     for dataset in datasets:
-        normal_tree = DecisionTreeClassifier()
-        accuracy = normal_tree.calc_accuracy(dataset)
-        print(f"{dataset.name} accuracy: {accuracy}")
+        test_classic_tree()
+        thread = threading.Thread(target=lambda: test_evolutionary_tree(dataset))
+        thread.start()
+        threads.append(thread)
 
-    print()
-    print("Evolutionary Decision Tree")
-    for dataset in datasets:
-        tree = EvolutionaryTreeClassifier(dataset)
-        accuracy = tree.calc_accuracy(dataset)
-        print(f"{dataset.name} accuracy: {accuracy}")
+    for thread in threads:
+        thread.join()
