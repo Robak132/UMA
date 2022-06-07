@@ -28,8 +28,6 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
-            if generation % 10 == 0:
-                print(f"Generation: {generation} best tree: {trees[0].score}")
 
         self.best_tree = trees[0]
 
@@ -52,7 +50,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
         return trees
 
     def succession(self, trees, mutated_trees):
-        return trees[0:self.elite_size] + mutated_trees[self.elite_size:]
+        return trees[:self.elite_size] + mutated_trees[self.elite_size:]
 
     def selection(self, trees):
         new_trees = []

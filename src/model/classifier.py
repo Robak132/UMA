@@ -34,7 +34,9 @@ class AbstractClassifier:
             x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
             self.train(x_train, y_train)
             predictions = self.predict(x_test)
-            accuracy.append(calculate_accuracy(y_test, predictions))
+            current_accuracy = calculate_accuracy(y_test, predictions)
+            print(f"Initialisation {i+1}/{iterations}: Accuracy: {current_accuracy}")
+            accuracy.append(current_accuracy)
 
         stats = (np.mean(accuracy), np.std(accuracy), np.min(accuracy), np.max(accuracy))
         self._save_file(file, stats)

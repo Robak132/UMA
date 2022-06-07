@@ -8,7 +8,7 @@ import numpy as np
 
 
 def test_evolutionary_tree(dataset):
-    print(f"{dataset.name} [evolution] started\n")
+    print(f"{dataset.name} [evolution] started\n", end="")
     tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
     stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
     print(f"mean: {stats[0]}\n"
@@ -18,7 +18,7 @@ def test_evolutionary_tree(dataset):
 
 
 def test_classic_tree(dataset):
-    print(f"{dataset.name} [standard] started")
+    print(f"{dataset.name} [standard] started\n", end="")
     normal_tree = DecisionTreeClassifier()
     stats = normal_tree.save_stats(dataset, f"../output/{dataset.name}/classic/stats.txt")
     print(f"mean: {stats[0]}\n"
