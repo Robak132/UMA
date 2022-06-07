@@ -8,7 +8,7 @@ import numpy as np
 
 
 def test_evolutionary_tree(dataset):
-    tree = EvolutionaryTreeClassifier(dataset)
+    tree = EvolutionaryTreeClassifier(alpha=1, beta=-1, division_node_prob=0.3, max_depth=20)
     stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
     print(f"{dataset.name} [evolution] finished\n"
           f"mean: {stats[0]}\n"

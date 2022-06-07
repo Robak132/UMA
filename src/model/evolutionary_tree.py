@@ -3,8 +3,12 @@ from model.evolutionary.tree_individual import TreeIndividual
 
 
 class EvolutionaryTreeClassifier(AbstractClassifier):
-    def __init__(self, dataset):
-        self.dataset = dataset
+    def __init__(self, alpha=1, beta=-1, division_node_prob=0.3, max_depth=20):
+        self.alpha = alpha
+        self.beta = beta
+        self.max_depth = max_depth
+        self.division_node_prob = division_node_prob
+
         self.best_tree = None
 
     def train(self, x, y):
@@ -18,18 +22,16 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     def predict(self, x):
         return self.best_tree.predict(x)
 
-    @staticmethod
-    def init_trees(x, y, population=20):
+    def init_trees(self, x, y, population=20):
         trees = []
         for i in range(population):
-            tree = TreeIndividual(x, y)
+            tree = TreeIndividual(x, y, division_node_prob=self.division_node_prob, max_depth=self.max_depth)
             trees.append(tree)
         return trees
 
-    @staticmethod
-    def score_trees(x, y, trees):
+    def score_trees(self, x, y, trees):
         for tree in trees:
-            tree.evaluate(x, y)
+            tree.evaluate(x, y, self.alpha, self.beta)
         return sorted(trees, key=lambda x: x.score, reverse=True)
 
     def mutate_trees(self, trees):

@@ -6,9 +6,6 @@ import numpy as np
 from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
 
 
-
-
-
 class AbstractClassifier:
     def train(self, x, y):
         raise Exception("This is an abstract method")

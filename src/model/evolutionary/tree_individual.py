@@ -4,8 +4,12 @@ from utils import calculate_accuracy
 
 class TreeIndividual:
     def __init__(self, x, y, division_node_prob=0.3, max_depth=20):
+        self.max_depth = max_depth
         self.root = DivisionNode(x, y, division_node_prob, max_depth)
         self.score = 0
+
+    def get_max_depth(self):
+        return self.max_depth - self.root.get_max_depth()
 
     def predict(self, x):
         predictions = []
@@ -13,8 +17,8 @@ class TreeIndividual:
             predictions.append(self.root.proceed(row))
         return predictions
 
-    def evaluate(self, x, y):
-        self.score = calculate_accuracy(y, self.predict(x))
+    def evaluate(self, x, y, alpha, beta):
+        self.score = calculate_accuracy(y, self.predict(x)) * alpha + beta * self.get_max_depth()
 
     def __repr__(self):
         return f"Tree(score = {self.score})"
@@ -36,6 +40,9 @@ class DivisionNode(AbstractNode):
         self.attribute = np.random.choice(x.columns)
         self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
 
+    def get_max_depth(self):
+        return min(self.left.get_max_depth(), self.right.get_max_depth())
+
     def proceed(self, record):
         if record[self.attribute] > self.value:
             return self.left.proceed(record)
@@ -56,6 +63,9 @@ class LeafNode(AbstractNode):
     def __init__(self, y, depth):
         self.value = np.random.choice(y)
         self.depth = depth
+
+    def get_max_depth(self):
+        return self.depth
 
     def proceed(self, record):
         return self.value
