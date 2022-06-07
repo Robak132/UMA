@@ -1,3 +1,4 @@
+import threading
 from copy import deepcopy
 
 import numpy as np
@@ -7,7 +8,7 @@ from model.tree_individual import TreeIndividual
 
 
 class EvolutionaryTreeClassifier(AbstractClassifier):
-    def __init__(self, alpha=1, beta=-1, max_generations=1, division_node_prob=0.3, max_depth=20, tournament_size=5,
+    def __init__(self, alpha=1, beta=-1, max_generations=100, division_node_prob=0.3, max_depth=20, tournament_size=2,
                  elite_size=1):
         self.alpha = alpha
         self.beta = beta
@@ -27,10 +28,8 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
-
-            # Break condition
-            if False:
-                break
+            if generation % 10 == 0:
+                print(f"Generation: {generation} best tree: {trees[0].score}")
 
         self.best_tree = trees[0]
 

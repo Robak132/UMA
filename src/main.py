@@ -8,20 +8,20 @@ import numpy as np
 
 
 def test_evolutionary_tree(dataset):
-    tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=20)
+    print(f"{dataset.name} [evolution] started\n")
+    tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
     stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
-    print(f"{dataset.name} [evolution] finished\n"
-          f"mean: {stats[0]}\n"
+    print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
           f"max: {stats[3]}\n\n", end="", flush=True)
 
 
-def test_classic_tree():
+def test_classic_tree(dataset):
+    print(f"{dataset.name} [standard] started")
     normal_tree = DecisionTreeClassifier()
     stats = normal_tree.save_stats(dataset, f"../output/{dataset.name}/classic/stats.txt")
-    print(f"{dataset.name} [standard] finished\n"
-          f"mean: {stats[0]}\n"
+    print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
           f"max: {stats[3]}\n\n", end="", flush=True)
@@ -39,13 +39,6 @@ if __name__ == "__main__":
         RedWineQualityDataset("../data/extracted/winequality_red.csv"),
     ]
 
-    threads = []
     for dataset in datasets:
-        test_classic_tree()
-        # test_evolutionary_tree(dataset)
-        thread = threading.Thread(target=lambda: test_evolutionary_tree(dataset))
-        thread.start()
-        threads.append(thread)
-
-    for thread in threads:
-        thread.join()
+        test_classic_tree(dataset)
+        test_evolutionary_tree(dataset)
