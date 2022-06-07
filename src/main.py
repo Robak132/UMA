@@ -8,7 +8,7 @@ import numpy as np
 
 
 def test_evolutionary_tree(dataset):
-    tree = EvolutionaryTreeClassifier(alpha=1, beta=-1, division_node_prob=0.3, max_depth=20)
+    tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=20)
     stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
     print(f"{dataset.name} [evolution] finished\n"
           f"mean: {stats[0]}\n"
@@ -30,17 +30,6 @@ def test_classic_tree():
 if __name__ == "__main__":
     random.seed(2137)
     np.random.seed(2137)
-    # d1 = load_dataset(", ";")
-    # d2 = load_car_evaluation()
-    # d3 = load_orders_data()
-    # d4 = load_titanic()
-    # d5 = load_wine()
-    # d6 = load_wine_quality_red()
-    # print(d6)
-    # sth = Model({"mut_prob": 0.5})
-    # # sth.calculate()
-    # parameters = {"mut_prob": [0.5, 0.1], "cross_prob": [0.3, 0.2]}
-    # calculate_for_all_combinations(parameters)
 
     datasets = [
         BreastTissueDataset("../data/extracted/breast_tissue.csv"),
@@ -53,6 +42,7 @@ if __name__ == "__main__":
     threads = []
     for dataset in datasets:
         test_classic_tree()
+        # test_evolutionary_tree(dataset)
         thread = threading.Thread(target=lambda: test_evolutionary_tree(dataset))
         thread.start()
         threads.append(thread)
