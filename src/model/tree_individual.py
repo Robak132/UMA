@@ -18,7 +18,11 @@ class TreeIndividual:
         return predictions
 
     def evaluate(self, x, y, alpha, beta):
-        self.score = calculate_accuracy(y, self.predict(x)) * alpha + beta * self.get_max_depth()
+        self.score = alpha * calculate_accuracy(y, self.predict(x)) + beta * self.get_max_depth()
+
+    def mutate(self):
+        self.root.mutate()
+
 
     def __repr__(self):
         return f"Tree(score = {self.score})"
@@ -33,6 +37,8 @@ class DivisionNode(AbstractNode):
     def __init__(self, x, y, division_node_prob, depth):
         self.division_node_prob = division_node_prob
         self.depth = depth
+        self.mutation_node_prob = 0.2
+        self.train_data_x = x
 
         self.left = self.create_random_node(x, y)
         self.right = self.create_random_node(x, y)
@@ -55,6 +61,14 @@ class DivisionNode(AbstractNode):
         else:
             return LeafNode(y, self.depth-1)
 
+    def mutate(self):
+        if np.random.rand() < self.mutation_node_prob:
+            self.attribute = np.random.choice(self.train_data_x.columns)
+            self.value = np.random.uniform(self.train_data_x[self.attribute].min(), self.train_data_x[self.attribute].max())
+        self.right.mutate()
+        self.left.mutate()
+
+
     def __repr__(self):
         return f"Node({self.value}, ({self.left.__repr__()}, {self.right.__repr__()})"
 
@@ -63,12 +77,18 @@ class LeafNode(AbstractNode):
     def __init__(self, y, depth):
         self.value = np.random.choice(y)
         self.depth = depth
+        self.mutation_node_prob = 0.2
+        self.train_data_y = y
 
     def get_max_depth(self):
         return self.depth
 
     def proceed(self, record):
         return self.value
+
+    def mutate(self):
+        if np.random.rand() < self.mutation_node_prob:
+            self.value = np.random.choice(self.train_data_y)
 
     def __repr__(self):
         return f"Node({self.value})"

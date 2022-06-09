@@ -28,7 +28,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
-
+            print(f"Epoch: {generation} - best accuracy: {trees[0].score}")
         self.best_tree = trees[0]
 
     def predict(self, x):
@@ -47,6 +47,8 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
         return sorted(trees, key=lambda t: t.score, reverse=True)
 
     def mutate_trees(self, trees):
+        for tree in trees:
+            tree.mutate()
         return trees
 
     def succession(self, trees, mutated_trees):
