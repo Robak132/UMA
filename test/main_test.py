@@ -26,13 +26,19 @@ def test_evolutionary_tree():
 
     xorDataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
 
-    tree = EvolutionaryTreeClassifier(alpha=1,
-                                      beta=-0.01,
-                                      max_generations=100,
-                                      division_node_prob=0.3,
-                                      max_depth=100,
-                                      tournament_size=2,
-                                      elite_size=1)
+    evolutionary_config = {
+        "alpha": 1,
+        "beta": -0.01,
+        "max_depth": 50,
+        "max_generations": 100,
+        "population_size": 50,
+        "crossover": True,
+        "division_node_prob": 0.3,
+        "mutation_change_type_prob": 0.2,
+        "tournament_size": 2,
+        "elite_size": 1
+    }
+    tree = EvolutionaryTreeClassifier(evolutionary_config)
 
     tree.train(xorDataset.x, xorDataset.y)
     predictions = tree.predict(pd.DataFrame([[0, 0], [0, 1], [1, 1], [1, 0]]))
