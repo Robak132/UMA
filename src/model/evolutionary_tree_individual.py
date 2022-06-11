@@ -5,10 +5,9 @@ from utils import calculate_accuracy
 
 
 class EvolutionaryTreeIndividual:
-    def __init__(self, x, y, division_node_prob=0.3, mutation_change_type_prob=0.2, max_depth=20):
+    def __init__(self, x, y, division_node_prob=0.3, max_depth=20):
         self.x = x
         self.y = y
-        self.mutation_change_type_prob = mutation_change_type_prob
         self.max_depth = max_depth
         self.root = DivisionNode(x, y, division_node_prob, max_depth, None)
         self.score = 0
@@ -25,9 +24,9 @@ class EvolutionaryTreeIndividual:
     def get_size(self):
         return len(self.get_nodes())
 
-    def mutate(self):
+    def mutate(self, mutation_change_type_prob):
         node_to_mutate = np.random.choice(self.get_nodes(with_root=False))
-        if np.random.rand() > self.mutation_change_type_prob:
+        if np.random.rand() > mutation_change_type_prob:
             # Changing parameters
             node_to_mutate.mutate_division()
         else:
@@ -72,11 +71,15 @@ class GenericNode:
     def proceed(self, record):
         raise Exception("This is an abstract method.")
 
+    def mutate_division(self):
+        raise Exception("This is an abstract method.")
+
     def replace_node(self, new_node):
         if self.parent is None:
             return
 
         new_node.parent = self.parent
+
         if self.parent.left == self:
             self.parent.left = new_node
         else:
@@ -97,7 +100,7 @@ class DivisionNode(GenericNode):
 
     @staticmethod
     def create_random_node(x, y, division_node_prob, depth, parent):
-        if np.random.rand() < division_node_prob and depth >= 0:
+        if np.random.rand() < division_node_prob and depth > 1:
             return DivisionNode(x, y, division_node_prob, depth - 1, parent)
         else:
             return LeafNode(x, y, depth - 1, parent)

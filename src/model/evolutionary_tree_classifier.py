@@ -53,7 +53,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     def initialise(self, x, y, population):
         trees = []
         for i in range(population):
-            tree = EvolutionaryTreeIndividual(x, y, self.division_node_prob, self.mutation_change_type_prob, self.max_depth)
+            tree = EvolutionaryTreeIndividual(x, y, self.division_node_prob, self.max_depth)
             trees.append(tree)
         return trees
 
@@ -62,20 +62,18 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             tree.evaluate(x, y, self.alpha, self.beta)
         return sorted(trees, key=lambda t: t.score, reverse=True)
 
-    @staticmethod
-    def mutate_trees(trees):
+    def mutate_trees(self, trees):
         for tree in trees:
-            tree.mutate()
+            tree.mutate(self.mutation_change_type_prob)
         return trees
 
     @staticmethod
     def crossover_trees(trees):
         for tree in trees:
-            another_parent = np.random.choice(trees)
-            new_subtree = deepcopy(another_parent.get_random_node())
-            node_to_exchange = tree.get_random_node(with_root=False)
-            new_subtree.assign_new_depth(node_to_exchange.depth)
-            node_to_exchange.replace_node(new_subtree)
+            node = tree.get_random_node(with_root=False)
+            new_subtree = deepcopy(np.random.choice(trees).get_random_node())
+            new_subtree.assign_new_depth(node.depth)
+            node.replace_node(new_subtree)
         return trees
 
     def succession(self, trees, mutated_trees):
