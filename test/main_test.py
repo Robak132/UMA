@@ -5,7 +5,6 @@ import pandas as pd
 from dataset import Dataset
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
-from utils import calculate_accuracy
 
 
 def test_decision_tree():
@@ -43,7 +42,3 @@ def test_evolutionary_tree():
     tree.train(xorDataset.x, xorDataset.y)
     predictions = tree.predict(pd.DataFrame([[0, 0], [0, 1], [1, 1], [1, 0]]))
     assert predictions == [0, 1, 0, 1]
-
-
-def test_accuracy():
-    assert calculate_accuracy([0, 1, 0, 1], [0, 1, 0, 1]) == 1.0
