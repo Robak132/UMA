@@ -1,3 +1,5 @@
+from enum import Enum
+
 import numpy as np
 from utils import calculate_accuracy
 
@@ -54,40 +56,21 @@ class EvolutionaryTreeIndividual:
         return f"Tree(score = {self.score})"
 
 
-class AbstractNode:
-    def proceed(self, record):
-        raise Exception("This is an abstract method.")
+class NodeType(Enum):
+    LEAF_NODE = 0,
+    DIVISION_NODE = 1
 
 
-class DivisionNode(AbstractNode):
-    def __init__(self, x, y, division_node_prob, depth, parent):
-        self.division_node_prob = division_node_prob
-        self.depth = depth
+class GenericNode:
+    def __init__(self, x, y, depth, parent):
         self.x = x
         self.y = y
-
+        self.depth = depth
         self.parent = parent
-        self.left = self.create_random_node(x, y, division_node_prob, depth, self)
-        self.right = self.create_random_node(x, y, division_node_prob, depth, self)
+        self.type = None
 
-        self.attribute = np.random.choice(x.columns)
-        self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
-
-    def change_node(self):
-        if self.parent.left == self:
-            self.parent.left = LeafNode(self.x, self.y, self.depth, self.parent)
-        else:
-            self.parent.right = LeafNode(self.x, self.y, self.depth, self.parent)
-
-    @staticmethod
-    def create_random_node(x, y, division_node_prob, depth, parent):
-        if np.random.rand() < division_node_prob and depth >= 0:
-            return DivisionNode(x, y, division_node_prob, depth - 1, parent)
-        else:
-            return LeafNode(x, y, depth - 1, parent)
-
-    def change_node_type(self):
-        self.replace_node(LeafNode(self.x, self.y, self.depth, self.parent))
+    def proceed(self, record):
+        raise Exception("This is an abstract method.")
 
     def replace_node(self, new_node):
         if self.parent is None:
@@ -98,6 +81,29 @@ class DivisionNode(AbstractNode):
             self.parent.left = new_node
         else:
             self.parent.right = new_node
+
+
+class DivisionNode(GenericNode):
+    def __init__(self, x, y, division_node_prob, depth, parent):
+        super().__init__(x, y, depth, parent)
+
+        self.left = self.create_random_node(x, y, division_node_prob, depth, self)
+        self.right = self.create_random_node(x, y, division_node_prob, depth, self)
+
+        self.type = NodeType.DIVISION_NODE
+        self.division_node_prob = division_node_prob
+        self.attribute = np.random.choice(x.columns)
+        self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
+
+    @staticmethod
+    def create_random_node(x, y, division_node_prob, depth, parent):
+        if np.random.rand() < division_node_prob and depth >= 0:
+            return DivisionNode(x, y, division_node_prob, depth - 1, parent)
+        else:
+            return LeafNode(x, y, depth - 1, parent)
+
+    def change_node_type(self):
+        self.replace_node(LeafNode(self.x, self.y, self.depth, self.parent))
 
     def assign_new_depth(self, new_depth):
         self.depth = new_depth
@@ -124,13 +130,12 @@ class DivisionNode(AbstractNode):
         return f"Node({self.attribute}:{self.value}, ({self.left.__repr__()}, {self.right.__repr__()})"
 
 
-class LeafNode(AbstractNode):
+class LeafNode(GenericNode):
     def __init__(self, x, y, depth, parent):
+        super().__init__(x, y, depth, parent)
+
+        self.type = NodeType.LEAF_NODE
         self.value = np.random.choice(np.unique(y))
-        self.depth = depth
-        self.parent = parent
-        self.x = x
-        self.y = y
 
     def replace_node(self, new_node):
         if self.parent is None:

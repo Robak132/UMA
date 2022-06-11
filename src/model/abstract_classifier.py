@@ -1,7 +1,5 @@
 import json
 import os
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 
@@ -17,12 +15,6 @@ class AbstractClassifier:
 
     def get_logger(self) -> list:
         raise Exception("This is an abstract method")
-
-    def show(self, dataset, train_test_ratio=0.3):
-        x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
-        self.train(x_train, y_train)
-        predictions = self.predict(x_test)
-        return wrap_labels_with_predictions_to_dataframe(y_test, predictions)
 
     def experiment(self, dataset, path, iterations=30, train_test_ratio=0.3):
         accuracy = []
