@@ -2,15 +2,16 @@ import random
 import threading
 
 from dataset import *
-from model.decision_tree import DecisionTreeClassifier
-from model.evolutionary_tree import EvolutionaryTreeClassifier
+from model.decision_tree_classifier import DecisionTreeClassifier
+from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
 import numpy as np
 
 
 def test_evolutionary_tree(dataset):
     print(f"{dataset.name} [evolution] started\n", end="")
-    tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
-    stats = tree.save_stats(dataset, f"../output/{dataset.name}/evolutionary/stats.txt")
+    tree = EvolutionaryTreeClassifier(alpha=100, beta=-0.1, max_generations=500, division_node_prob=0.5, max_depth=50)
+    # tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
+    stats = tree.experiment(dataset, f"../output/{dataset.name}/evolutionary/stats.txt", iterations=5)
     print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
@@ -20,7 +21,7 @@ def test_evolutionary_tree(dataset):
 def test_classic_tree(dataset):
     print(f"{dataset.name} [standard] started\n", end="")
     normal_tree = DecisionTreeClassifier()
-    stats = normal_tree.save_stats(dataset, f"../output/{dataset.name}/classic/stats.txt")
+    stats = normal_tree.experiment(dataset, f"../output/{dataset.name}/classic/stats.txt", iterations=5)
     print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
@@ -34,9 +35,9 @@ if __name__ == "__main__":
     datasets = [
         BreastTissueDataset("../data/extracted/breast_tissue.csv"),
         CarEvaluationDataset("../data/extracted/car_evaluation.csv"),
-        TitanicDataset("../data/extracted/titanic.csv"),
-        WineDataset("../data/extracted/wine.csv"),
-        RedWineQualityDataset("../data/extracted/winequality_red.csv"),
+        # TitanicDataset("../data/extracted/titanic.csv"),
+        # WineDataset("../data/extracted/wine.csv"),
+        # RedWineQualityDataset("../data/extracted/winequality_red.csv"),
     ]
 
     for dataset in datasets:

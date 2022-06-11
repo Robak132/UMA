@@ -1,6 +1,6 @@
 from sklearn import tree
 
-from model.classifier import AbstractClassifier
+from model.abstract_classifier import AbstractClassifier
 
 
 class DecisionTreeClassifier(AbstractClassifier):

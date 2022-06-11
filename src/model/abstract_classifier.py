@@ -28,7 +28,7 @@ class AbstractClassifier:
             accuracy += calculate_accuracy(y_test, predictions)
         return accuracy/iterations
 
-    def save_stats(self, dataset, file, iterations=30, train_test_ratio=0.3):
+    def experiment(self, dataset, file, iterations=30, train_test_ratio=0.3):
         accuracy = []
         for i in range(iterations):
             x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
