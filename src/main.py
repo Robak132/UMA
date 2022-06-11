@@ -1,6 +1,5 @@
 import os
 import random
-import threading
 
 from dataset import *
 from datetime import datetime

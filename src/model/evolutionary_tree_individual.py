@@ -8,11 +8,8 @@ class EvolutionaryTreeIndividual:
         self.y = y
         self.mutation_change_type_prob = mutation_change_type_prob
         self.max_depth = max_depth
-        self.root = DivisionNode(x, y, division_node_prob, max_depth)
+        self.root = DivisionNode(x, y, division_node_prob, max_depth, None)
         self.score = 0
-
-    def get_max_depth(self):
-        return self.max_depth - self.root.get_max_depth()
 
     def predict(self, x):
         predictions = []
@@ -27,14 +24,13 @@ class EvolutionaryTreeIndividual:
         return len(self.get_nodes())
 
     def mutate(self):
-        node_to_mutate = np.random.choice(self.get_nodes())
+        node_to_mutate = np.random.choice(self.get_nodes(with_root=False))
         if np.random.rand() > self.mutation_change_type_prob:
-            node_to_mutate.mutate()
+            # Changing parameters
+            node_to_mutate.mutate_division()
         else:
-            if node_to_mutate is LeafNode:
-                self.exchange_node(node_to_mutate, DivisionNode(self.x, self.y, 0, node_to_mutate.depth))
-            elif node_to_mutate is DivisionNode:
-                self.exchange_node(node_to_mutate, LeafNode(node_to_mutate.y, node_to_mutate.depth))
+            # Change tree structure
+            node_to_mutate.change_node_type()
 
     def exchange_node(self, node_to_exchange, new_node):
         if self.root == node_to_exchange:
@@ -63,35 +59,45 @@ class AbstractNode:
         raise Exception("This is an abstract method.")
 
 
-def create_random_node(x, y, division_node_prob, depth):
-    if np.random.rand() < division_node_prob and depth >= 0:
-        return DivisionNode(x, y, division_node_prob, depth-1)
-    else:
-        return LeafNode(y, depth-1)
-
-
 class DivisionNode(AbstractNode):
-    def __init__(self, x, y, division_node_prob, depth):
+    def __init__(self, x, y, division_node_prob, depth, parent):
         self.division_node_prob = division_node_prob
         self.depth = depth
-        self.train_data_x = x
+        self.x = x
+        self.y = y
 
-        self.left = create_random_node(x, y, division_node_prob, depth)
-        self.right = create_random_node(x, y, division_node_prob, depth)
+        self.parent = parent
+        self.left = self.create_random_node(x, y, division_node_prob, depth, self)
+        self.right = self.create_random_node(x, y, division_node_prob, depth, self)
 
         self.attribute = np.random.choice(x.columns)
         self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
 
-    def exchange_node(self, node_to_exchange, new_node):
-        if self.left == node_to_exchange:
-            self.left = new_node
-        elif self.right == node_to_exchange:
-            self.right = new_node
+    def change_node(self):
+        if self.parent.left == self:
+            self.parent.left = LeafNode(self.x, self.y, self.depth, self.parent)
         else:
-            if self.left is DivisionNode:
-                self.left.exchange_node(node_to_exchange, new_node)
-            if self.right is DivisionNode:
-                self.right.exchange_node(node_to_exchange, new_node)
+            self.parent.right = LeafNode(self.x, self.y, self.depth, self.parent)
+
+    @staticmethod
+    def create_random_node(x, y, division_node_prob, depth, parent):
+        if np.random.rand() < division_node_prob and depth >= 0:
+            return DivisionNode(x, y, division_node_prob, depth - 1, parent)
+        else:
+            return LeafNode(x, y, depth - 1, parent)
+
+    def change_node_type(self):
+        self.replace_node(LeafNode(self.x, self.y, self.depth, self.parent))
+
+    def replace_node(self, new_node):
+        if self.parent is None:
+            return
+
+        new_node.parent = self.parent
+        if self.parent.left == self:
+            self.parent.left = new_node
+        else:
+            self.parent.right = new_node
 
     def assign_new_depth(self, new_depth):
         self.depth = new_depth
@@ -110,19 +116,34 @@ class DivisionNode(AbstractNode):
         else:
             return self.right.proceed(record)
 
-    def mutate(self):
-        self.attribute = np.random.choice(self.train_data_x.columns)
-        self.value = np.random.uniform(self.train_data_x[self.attribute].min(), self.train_data_x[self.attribute].max())
+    def mutate_division(self):
+        self.attribute = np.random.choice(self.x.columns)
+        self.value = np.random.uniform(self.x[self.attribute].min(), self.x[self.attribute].max())
 
     def __repr__(self):
         return f"Node({self.attribute}:{self.value}, ({self.left.__repr__()}, {self.right.__repr__()})"
 
 
 class LeafNode(AbstractNode):
-    def __init__(self, y, depth):
+    def __init__(self, x, y, depth, parent):
         self.value = np.random.choice(np.unique(y))
         self.depth = depth
-        self.train_data_y = y
+        self.parent = parent
+        self.x = x
+        self.y = y
+
+    def replace_node(self, new_node):
+        if self.parent is None:
+            return
+
+        new_node.parent = self.parent
+        if self.parent.left == self:
+            self.parent.left = new_node
+        else:
+            self.parent.right = new_node
+
+    def change_node_type(self):
+        self.replace_node(DivisionNode(self.x, self.y, 0, self.depth, self.parent))
 
     def get_max_depth(self):
         return self.depth
@@ -136,8 +157,8 @@ class LeafNode(AbstractNode):
     def assign_new_depth(self, depth):
         self.depth = depth
 
-    def mutate(self):
-        self.value = np.random.choice(np.unique(self.train_data_y))
+    def mutate_division(self):
+        self.value = np.random.choice(np.unique(self.y))
 
     def __repr__(self):
         return f"Node({self.value})"

@@ -1,4 +1,3 @@
-import threading
 from copy import deepcopy
 
 import numpy as np
@@ -63,18 +62,20 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             tree.evaluate(x, y, self.alpha, self.beta)
         return sorted(trees, key=lambda t: t.score, reverse=True)
 
-    def mutate_trees(self, trees):
+    @staticmethod
+    def mutate_trees(trees):
         for tree in trees:
-            tree.mutate()
+           tree.mutate()
         return trees
 
-    def crossover_trees(self, trees):
+    @staticmethod
+    def crossover_trees(trees):
         for tree in trees:
             another_parent = np.random.choice(trees)
             new_subtree = deepcopy(another_parent.get_random_node())
             node_to_exchange = tree.get_random_node(with_root=False)
             new_subtree.assign_new_depth(node_to_exchange.depth)
-            tree.exchange_node(node_to_exchange, new_subtree)
+            node_to_exchange.replace_node(new_subtree)
         return trees
 
     def succession(self, trees, mutated_trees):
