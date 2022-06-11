@@ -3,10 +3,10 @@ from utils import calculate_accuracy
 
 
 class EvolutionaryTreeIndividual:
-    def __init__(self, x, y, division_node_prob=0.3, max_depth=20):
+    def __init__(self, x, y, division_node_prob=0.3, mutation_change_type_prob=0.2, max_depth=20):
         self.x = x
         self.y = y
-        self.change_mutation_type_prob = 0.2
+        self.mutation_change_type_prob = mutation_change_type_prob
         self.max_depth = max_depth
         self.root = DivisionNode(x, y, division_node_prob, max_depth)
         self.score = 0
@@ -28,7 +28,7 @@ class EvolutionaryTreeIndividual:
 
     def mutate(self):
         node_to_mutate = np.random.choice(self.get_nodes())
-        if np.random.rand() > self.change_mutation_type_prob:
+        if np.random.rand() > self.mutation_change_type_prob:
             node_to_mutate.mutate()
         else:
             if node_to_mutate is LeafNode:
@@ -114,7 +114,6 @@ class DivisionNode(AbstractNode):
         self.attribute = np.random.choice(self.train_data_x.columns)
         self.value = np.random.uniform(self.train_data_x[self.attribute].min(), self.train_data_x[self.attribute].max())
 
-
     def __repr__(self):
         return f"Node({self.attribute}:{self.value}, ({self.left.__repr__()}, {self.right.__repr__()})"
 
@@ -122,7 +121,6 @@ class DivisionNode(AbstractNode):
 class LeafNode(AbstractNode):
     def __init__(self, y, depth):
         self.value = np.random.choice(np.unique(y))
-        self.change_type_mutation_prob = 0.3
         self.depth = depth
         self.train_data_y = y
 
@@ -139,8 +137,7 @@ class LeafNode(AbstractNode):
         self.depth = depth
 
     def mutate(self):
-        if np.random.rand() < self.change_type_mutation_prob:
-            self.value = np.random.choice(np.unique(self.train_data_y))
+        self.value = np.random.choice(np.unique(self.train_data_y))
 
     def __repr__(self):
         return f"Node({self.value})"
