@@ -27,9 +27,10 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             selected_trees = self.selection(trees)
             crossovered_trees = self.crossover_trees(selected_trees)
             mutated_trees = self.mutate_trees(crossovered_trees)
+            # mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
-            # print(f"Epoch: {generation} - best tree score: {trees[0].score}")
+            print(f"Epoch: {generation} - best tree score: {trees[0].score}")
         self.best_tree = trees[0]
 
     def predict(self, x):

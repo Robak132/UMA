@@ -4,6 +4,9 @@ from utils import calculate_accuracy
 
 class EvolutionaryTreeIndividual:
     def __init__(self, x, y, division_node_prob=0.3, max_depth=20):
+        self.x = x
+        self.y = y
+        self.change_mutation_type_prob = 0.2
         self.max_depth = max_depth
         self.root = DivisionNode(x, y, division_node_prob, max_depth)
         self.score = 0
@@ -24,8 +27,14 @@ class EvolutionaryTreeIndividual:
         return len(self.get_nodes())
 
     def mutate(self):
-        np.random.choice(self.get_nodes()).mutate()
-        # self.root.mutate()
+        node_to_mutate = np.random.choice(self.get_nodes())
+        if np.random.rand() > self.change_mutation_type_prob:
+            node_to_mutate.mutate()
+        else:
+            if node_to_mutate is LeafNode:
+                self.exchange_node(node_to_mutate, DivisionNode(self.x, self.y, 0, node_to_mutate.depth))
+            elif node_to_mutate is DivisionNode:
+                self.exchange_node(node_to_mutate, LeafNode(node_to_mutate.y, node_to_mutate.depth))
 
     def exchange_node(self, node_to_exchange, new_node):
         if self.root == node_to_exchange:
@@ -54,15 +63,21 @@ class AbstractNode:
         raise Exception("This is an abstract method.")
 
 
+def create_random_node(x, y, division_node_prob, depth):
+    if np.random.rand() < division_node_prob and depth >= 0:
+        return DivisionNode(x, y, division_node_prob, depth-1)
+    else:
+        return LeafNode(y, depth-1)
+
+
 class DivisionNode(AbstractNode):
     def __init__(self, x, y, division_node_prob, depth):
         self.division_node_prob = division_node_prob
         self.depth = depth
-        self.mutation_node_prob = 0.3
         self.train_data_x = x
 
-        self.left = self.create_random_node(x, y)
-        self.right = self.create_random_node(x, y)
+        self.left = create_random_node(x, y, division_node_prob, depth)
+        self.right = create_random_node(x, y, division_node_prob, depth)
 
         self.attribute = np.random.choice(x.columns)
         self.value = np.random.uniform(x[self.attribute].min(), x[self.attribute].max())
@@ -73,8 +88,10 @@ class DivisionNode(AbstractNode):
         elif self.right == node_to_exchange:
             self.right = new_node
         else:
-            if self.left is DivisionNode: self.left.exchange_node(node_to_exchange, new_node) #DANGER
-            if self.right is DivisionNode: self.right.exchange_node(node_to_exchange, new_node) #DANGER
+            if self.left is DivisionNode:
+                self.left.exchange_node(node_to_exchange, new_node)
+            if self.right is DivisionNode:
+                self.right.exchange_node(node_to_exchange, new_node)
 
     def assign_new_depth(self, new_depth):
         self.depth = new_depth
@@ -93,18 +110,9 @@ class DivisionNode(AbstractNode):
         else:
             return self.right.proceed(record)
 
-    def create_random_node(self, x, y):
-        if np.random.rand() < self.division_node_prob and self.depth >= 0:
-            return DivisionNode(x, y, self.division_node_prob, self.depth-1)
-        else:
-            return LeafNode(y, self.depth-1)
-
     def mutate(self):
-        # if np.random.rand() < self.mutation_node_prob:
         self.attribute = np.random.choice(self.train_data_x.columns)
         self.value = np.random.uniform(self.train_data_x[self.attribute].min(), self.train_data_x[self.attribute].max())
-        # self.right.mutate()
-        # self.left.mutate()
 
 
     def __repr__(self):
@@ -114,8 +122,8 @@ class DivisionNode(AbstractNode):
 class LeafNode(AbstractNode):
     def __init__(self, y, depth):
         self.value = np.random.choice(np.unique(y))
+        self.change_type_mutation_prob = 0.3
         self.depth = depth
-        self.mutation_node_prob = 0.2
         self.train_data_y = y
 
     def get_max_depth(self):
@@ -131,8 +139,8 @@ class LeafNode(AbstractNode):
         self.depth = depth
 
     def mutate(self):
-        # if np.random.rand() < self.mutation_node_prob:
-        self.value = np.random.choice(np.unique(self.train_data_y))
+        if np.random.rand() < self.change_type_mutation_prob:
+            self.value = np.random.choice(np.unique(self.train_data_y))
 
     def __repr__(self):
         return f"Node({self.value})"
