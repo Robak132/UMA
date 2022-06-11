@@ -6,6 +6,7 @@ from dataset import *
 from datetime import datetime
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
+from utils import get_dictionary_combinations, merge_list_of_dicts_into_one_dict
 import numpy as np
 
 
@@ -48,20 +49,22 @@ if __name__ == "__main__":
         "train_test_ratio": 0.3,
         "iterations": 10
     }
-    evolutionary_config = {
-        "alpha": 100,
-        "beta": -0.1,
-        "max_depth": 50,
-        "max_generations": 10,
-        "population_size": 50,
-        "crossover": True,
-        "division_node_prob": 0.5,
-        "mutation_change_type_prob": 0.2,
-        "tournament_size": 2,
-        "elite_size": 1
+    configs = {
+        "alpha": [100],
+        "beta": [-0.1],
+        "max_depth": [50],
+        "max_generations": [10],
+        "population_size": [50],
+        "crossover": [True, False],
+        "division_node_prob": [0.5],
+        "mutation_change_type_prob": [0.2],
+        "tournament_size": [2],
+        "elite_size": [1]
     }
-    experiment_id = datetime.now().strftime("%d-%m-%Y %H_%M_%S")
 
-    for dataset in datasets:
-        test_classic_tree(dataset, meta_config, experiment_id)
-        test_evolutionary_tree(dataset, evolutionary_config, meta_config, experiment_id)
+    for config in get_dictionary_combinations(configs):
+        evolutionary_config = merge_list_of_dicts_into_one_dict(config)
+        experiment_id = datetime.now().strftime("%d-%m-%Y %H_%M_%S")
+        for dataset in datasets:
+            test_classic_tree(dataset, meta_config, experiment_id)
+            test_evolutionary_tree(dataset, evolutionary_config, meta_config, experiment_id)
