@@ -71,3 +71,8 @@ def format_dict_to_str(dictionary: dict) -> str:
     for element in dictionary:
         result_string += str(element) + "_" + str(dictionary[element]) + "_"
     return result_string[:-1]
+
+
+def join_trees(node, sub_tree):
+    sub_tree.assign_new_depth(node.depth)
+    node.replace_node(sub_tree)
