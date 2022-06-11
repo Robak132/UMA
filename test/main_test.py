@@ -2,9 +2,10 @@ import random
 import numpy as np
 import pandas as pd
 
-from dataset import Dataset, BreastTissueDataset
+from dataset import Dataset
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
+from utils import calculate_accuracy
 
 
 def test_decision_tree():
@@ -26,13 +27,17 @@ def test_evolutionary_tree():
     xorDataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
 
     tree = EvolutionaryTreeClassifier(alpha=1,
-                                      beta=-0.1,
+                                      beta=-0.01,
                                       max_generations=100,
                                       division_node_prob=0.3,
-                                      max_depth=20,
+                                      max_depth=100,
                                       tournament_size=2,
                                       elite_size=1)
 
     tree.train(xorDataset.x, xorDataset.y)
     predictions = tree.predict(pd.DataFrame([[0, 0], [0, 1], [1, 1], [1, 0]]))
     assert predictions == [0, 1, 0, 1]
+
+
+def test_accuracy():
+    assert calculate_accuracy([0, 1, 0, 1], [0, 1, 0, 1]) == 1.0

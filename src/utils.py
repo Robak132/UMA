@@ -59,7 +59,7 @@ def wrap_labels_with_predictions_to_dataframe(labels, predictions):
 
 
 def calculate_accuracy(labels, predictions):
-    return np.sum(predictions == labels) / len(labels)
+    return np.sum(np.array(predictions) == np.array(labels)) / len(labels)
 
 
 def calculate_accuracy_from_dataframe(outcome_dataframe):

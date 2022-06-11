@@ -21,7 +21,7 @@ class EvolutionaryTreeIndividual:
         return predictions
 
     def evaluate(self, x, y, alpha, beta):
-        self.score = alpha * calculate_accuracy(y, self.predict(x)) + beta * self.get_size()
+        self.score = alpha * calculate_accuracy(y.tolist(), self.predict(x)) + beta * self.get_size()
 
     def get_size(self):
         return len(self.get_nodes())
