@@ -7,9 +7,9 @@ from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
 import numpy as np
 
 
-def test_evolutionary_tree(dataset):
+def test_evolutionary_tree(dataset, config):
     print(f"{dataset.name} [evolution] started\n", end="")
-    tree = EvolutionaryTreeClassifier(alpha=100, beta=-0.1, max_generations=500, division_node_prob=0.5, max_depth=50)
+    tree = EvolutionaryTreeClassifier(config)
     # tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
     stats = tree.experiment(dataset, f"../output/{dataset.name}/evolutionary/stats.txt", iterations=5)
     print(f"mean: {stats[0]}\n"
@@ -40,6 +40,18 @@ if __name__ == "__main__":
         # RedWineQualityDataset("../data/extracted/winequality_red.csv"),
     ]
 
+    evolutionary_config = {
+        "alpha": 100,
+        "beta": -0.1,
+        "max_depth": 50,
+        "max_generations": 1000,
+        "population_size": 50,
+        "crossover": True,
+        "division_node_prob": 0.5,
+        "mutation_change_type_prob": 0.2,
+        "tournament_size": 2,
+        "elite_size": 1
+    }
     for dataset in datasets:
         test_classic_tree(dataset)
-        test_evolutionary_tree(dataset)
+        test_evolutionary_tree(dataset, evolutionary_config)
