@@ -64,3 +64,10 @@ def calculate_accuracy(labels, predictions):
 
 def calculate_accuracy_from_dataframe(outcome_dataframe):
     return np.sum(outcome_dataframe['prediction'] == outcome_dataframe['label']) / len(outcome_dataframe)
+
+
+def format_dict_to_str(dictionary: dict) -> str:
+    result_string = ""
+    for element in dictionary:
+        result_string += str(element) + "_" + str(dictionary[element]) + "_"
+    return result_string[:-1]
