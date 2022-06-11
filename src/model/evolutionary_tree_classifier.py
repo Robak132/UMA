@@ -54,7 +54,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     @staticmethod
     def mutate_trees(trees):
         for tree in trees:
-           tree.mutate()
+            tree.mutate()
         return trees
 
     @staticmethod

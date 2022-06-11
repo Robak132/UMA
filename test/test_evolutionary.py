@@ -1,12 +1,12 @@
 from dataset import Dataset
-from model.evolutionary_tree_individual import EvolutionaryTreeIndividual, DivisionNode, LeafNode
+from model.evolutionary_tree_individual import EvolutionaryTreeIndividual, DivisionNode, LeafNode, NodeType
 
 
 def test_division_node():
     xor_dataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
     node = DivisionNode(xor_dataset.x, xor_dataset.y, 0, 20, None)
-    assert node.left.__class__ is LeafNode
-    assert node.right.__class__ is LeafNode
+    assert node.left.type == NodeType.LEAF_NODE
+    assert node.right.type == NodeType.LEAF_NODE
 
 
 def test_mutation():
