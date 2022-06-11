@@ -4,15 +4,23 @@ import pandas as pd
 class Dataset:
     name = ""
 
+    def __init__(self, x, y):
+        self.x = pd.DataFrame(x)
+        self.y = pd.Series(y)
+
+
+class CSVDataset(Dataset):
+    name = ""
+
     def __init__(self, csv):
-        self.x, self.y = self.load_dataset(csv)
+        super().__init__(*self.load_dataset(csv))
 
     @staticmethod
     def load_dataset(csv) -> tuple[pd.DataFrame, pd.DataFrame]:
         raise Exception("This is an abstract method")
 
 
-class BreastTissueDataset(Dataset):
+class BreastTissueDataset(CSVDataset):
     name = "breast_tissue"
 
     @staticmethod
@@ -24,7 +32,7 @@ class BreastTissueDataset(Dataset):
         return x, y
 
 
-class CarEvaluationDataset(Dataset):
+class CarEvaluationDataset(CSVDataset):
     name = "car_evaluation"
 
     @staticmethod
@@ -38,7 +46,7 @@ class CarEvaluationDataset(Dataset):
         return x, y
 
 
-class TitanicDataset(Dataset):
+class TitanicDataset(CSVDataset):
     name = "titanic"
 
     @staticmethod
@@ -52,7 +60,7 @@ class TitanicDataset(Dataset):
         return x, y
 
 
-class WineDataset(Dataset):
+class WineDataset(CSVDataset):
     name = "wine"
 
     @staticmethod
@@ -63,7 +71,7 @@ class WineDataset(Dataset):
         return x, y
 
 
-class RedWineQualityDataset(Dataset):
+class RedWineQualityDataset(CSVDataset):
     name = "red_wine_quality"
 
     @staticmethod

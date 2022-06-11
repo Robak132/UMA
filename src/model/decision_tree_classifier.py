@@ -10,5 +10,5 @@ class DecisionTreeClassifier(AbstractClassifier):
     def train(self, x, y):
         self.clf.fit(x, y)
 
-    def predict(self, x):
-        return self.clf.predict(x)
+    def predict(self, x) -> list:
+        return self.clf.predict(x).tolist()

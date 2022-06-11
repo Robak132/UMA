@@ -88,3 +88,6 @@ target/
 
 # Data
 /output
+
+# Pytest
+.pytest_cache

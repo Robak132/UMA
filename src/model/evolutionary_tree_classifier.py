@@ -33,7 +33,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             print(f"Epoch: {generation} - best tree score: {trees[0].score}")
         self.best_tree = trees[0]
 
-    def predict(self, x):
+    def predict(self, x) -> list:
         return self.best_tree.predict(x)
 
     def initialise(self, x, y, population=20):

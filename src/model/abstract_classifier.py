@@ -10,7 +10,7 @@ class AbstractClassifier:
     def train(self, x, y):
         raise Exception("This is an abstract method")
 
-    def predict(self, x):
+    def predict(self, x) -> list:
         raise Exception("This is an abstract method")
 
     def show(self, dataset, train_test_ratio=0.3):
