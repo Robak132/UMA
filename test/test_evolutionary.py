@@ -1,6 +1,6 @@
 from copy import deepcopy
 from dataset import Dataset
-from model.evolutionary_tree_individual import EvolutionaryTreeIndividual, DivisionNode, LeafNode, NodeType
+from model.evolutionary_tree_individual import EvolutionaryTreeIndividual, DivisionNode, NodeType
 
 
 def test_division_node():

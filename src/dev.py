@@ -1,9 +1,7 @@
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
-from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
-from model.decision_tree_classifier import DecisionTreeClassifier
-from dataset import BreastTissueDataset, CarEvaluationDataset, TitanicDataset
+\from model.decision_tree_classifier import DecisionTreeClassifier
+from dataset import BreastTissueDataset
 from utils import split_into_train_test, calculate_accuracy
-# tree = EvolutionaryTreeClassifier(alpha=100, beta=-1, division_node_prob=0.3, max_depth=50)
 import numpy as np
 
 if __name__ == "__main__":

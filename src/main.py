@@ -1,11 +1,12 @@
-import os
 import random
-
-from dataset import *
 from datetime import datetime
+
+import numpy as np
+
+from dataset import BreastTissueDataset, CarEvaluationDataset, TitanicDataset, WineDataset, RedWineQualityDataset
+*
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
-import numpy as np
 
 
 def test_evolutionary_tree(dataset, evolutionary_config, meta_config, experiment_id):
@@ -13,7 +14,10 @@ def test_evolutionary_tree(dataset, evolutionary_config, meta_config, experiment
     tree = EvolutionaryTreeClassifier(evolutionary_config)
     path = f"../output/{experiment_id}/{dataset.name}/evolutionary"
     tree._save_config(path, evolutionary_config)
-    stats = tree.experiment(dataset, path, iterations=meta_config["iterations"], train_test_ratio=meta_config["train_test_ratio"])
+    stats = tree.experiment(dataset,
+                            path,
+                            iterations=meta_config["iterations"],
+                            train_test_ratio=meta_config["train_test_ratio"])
     print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
@@ -24,7 +28,10 @@ def test_classic_tree(dataset, meta_config, experiment_id):
     print(f"{dataset.name} [standard] started\n", end="")
     path = f"../output/{experiment_id}/{dataset.name}/classic"
     normal_tree = DecisionTreeClassifier()
-    stats = normal_tree.experiment(dataset, path, iterations=meta_config["iterations"], train_test_ratio=meta_config["train_test_ratio"])
+    stats = normal_tree.experiment(dataset,
+                                   path,
+                                   iterations=meta_config["iterations"],
+                                   train_test_ratio=meta_config["train_test_ratio"])
     print(f"mean: {stats[0]}\n"
           f"standard_deviation: {stats[1]}\n"
           f"min: {stats[2]}\n"
