@@ -2,6 +2,7 @@ import threading
 from copy import deepcopy
 
 import numpy as np
+from utils import calculate_accuracy
 
 from model.abstract_classifier import AbstractClassifier
 from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
@@ -25,6 +26,7 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     def train(self, x, y):
         trees = self.initialise(x, y, self.population_size)
         trees = self.score_trees(x, y, trees)
+        self.logger = []
         for generation in range(self.max_generations):
             selected_trees = self.selection(trees)
             if self.crossover:
@@ -35,10 +37,19 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
             print(f"Epoch: {generation} - best tree score: {trees[0].score}")
+            self.logger.append({
+                "epoch": generation,
+                "score": trees[0].score,
+                "accuracy": calculate_accuracy(y.tolist(), trees[0].predict(x)),
+                "size": trees[0].get_size()
+            })
         self.best_tree = trees[0]
 
     def predict(self, x) -> list:
         return self.best_tree.predict(x)
+
+    def get_logger(self) -> list:
+        return self.logger
 
     def initialise(self, x, y, population):
         trees = []

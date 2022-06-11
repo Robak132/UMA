@@ -6,7 +6,6 @@ from dataset import *
 from datetime import datetime
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
-from utils import format_dict_to_str
 import numpy as np
 
 
@@ -61,9 +60,8 @@ if __name__ == "__main__":
         "tournament_size": 2,
         "elite_size": 1
     }
-
-    print(format_dict_to_str(evolutionary_config))
     experiment_id = datetime.now().strftime("%d-%m-%Y %H_%M_%S")
+
     for dataset in datasets:
         test_classic_tree(dataset, meta_config, experiment_id)
         test_evolutionary_tree(dataset, evolutionary_config, meta_config, experiment_id)

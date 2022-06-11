@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 
 from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
 
@@ -14,20 +15,14 @@ class AbstractClassifier:
     def predict(self, x) -> list:
         raise Exception("This is an abstract method")
 
+    def get_logger(self) -> list:
+        raise Exception("This is an abstract method")
+
     def show(self, dataset, train_test_ratio=0.3):
         x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
         self.train(x_train, y_train)
         predictions = self.predict(x_test)
         return wrap_labels_with_predictions_to_dataframe(y_test, predictions)
-
-    def calc_accuracy(self, dataset, iterations=30, train_test_ratio=0.3):
-        accuracy = 0
-        for i in range(iterations):
-            x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
-            self.train(x_train, y_train)
-            predictions = self.predict(x_test)
-            accuracy += calculate_accuracy(y_test, predictions)
-        return accuracy/iterations
 
     def experiment(self, dataset, path, iterations=30, train_test_ratio=0.3):
         accuracy = []
@@ -38,17 +33,24 @@ class AbstractClassifier:
             current_accuracy = calculate_accuracy(y_test, predictions)
             print(f"Initialisation {i+1}/{iterations}: Accuracy: {current_accuracy}")
             accuracy.append(current_accuracy)
-            self._save_predictions(y_test, predictions, path, i)
+            self._save_predictions(path, i, y_test, predictions)
+            self._save_logger(path, i, self.get_logger())
 
         stats = (np.mean(accuracy), np.std(accuracy), np.min(accuracy), np.max(accuracy))
         self._save_file(path + "/stats.txt", stats)
         return stats
 
     @staticmethod
-    def _save_predictions(labels, predictions, path: str, iteration: int):
+    def _save_predictions(path, iteration, labels, predictions):
         os.makedirs(path + "/" + str(iteration), exist_ok=True)
         outcome = wrap_labels_with_predictions_to_dataframe(labels, predictions)
         outcome.to_csv(path + "/" + str(iteration) + "/predictions.csv")
+
+    @staticmethod
+    def _save_logger(path, iteration, logger):
+        os.makedirs(path + "/" + str(iteration), exist_ok=True)
+        logger_dataframe = pd.DataFrame(logger)
+        logger_dataframe.to_csv(path + "/" + str(iteration) + "/logger.csv")
 
     @staticmethod
     def _save_config(path, config):
