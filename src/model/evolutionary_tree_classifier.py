@@ -3,12 +3,13 @@ from copy import deepcopy
 import numpy as np
 from utils import calculate_accuracy
 
-from model.abstract_classifier import AbstractClassifier
+from model.abstract_classifier import GenericClassifier
 from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
 
 
-class EvolutionaryTreeClassifier(AbstractClassifier):
+class EvolutionaryTreeClassifier(GenericClassifier):
     def __init__(self, config):
+        super().__init__()
         self.alpha = config['alpha']
         self.beta = config['beta']
         self.max_depth = config['max_depth']
@@ -46,9 +47,6 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
 
     def predict(self, x) -> list:
         return self.best_tree.predict(x)
-
-    def get_logger(self) -> list:
-        return self.logger
 
     def initialise(self, x, y, population):
         trees = []

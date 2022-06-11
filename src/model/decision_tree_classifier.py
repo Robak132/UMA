@@ -1,11 +1,12 @@
 from sklearn import tree
 from utils import calculate_accuracy
 
-from model.abstract_classifier import AbstractClassifier
+from model.abstract_classifier import GenericClassifier
 
 
-class DecisionTreeClassifier(AbstractClassifier):
+class DecisionTreeClassifier(GenericClassifier):
     def __init__(self):
+        super().__init__()
         self.clf = tree.DecisionTreeClassifier()
 
     def train(self, x, y):
@@ -16,9 +17,6 @@ class DecisionTreeClassifier(AbstractClassifier):
             "depth": self.clf.get_depth(),
             "accuracy_on_test": calculate_accuracy(y.tolist(), self.predict(x))
         })
-
-    def get_logger(self) -> list:
-        return self.logger
 
     def predict(self, x) -> list:
         return self.clf.predict(x).tolist()
