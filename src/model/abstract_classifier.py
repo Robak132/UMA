@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -28,7 +29,7 @@ class AbstractClassifier:
             accuracy += calculate_accuracy(y_test, predictions)
         return accuracy/iterations
 
-    def experiment(self, dataset, file, iterations=30, train_test_ratio=0.3):
+    def experiment(self, dataset, path, iterations=30, train_test_ratio=0.3):
         accuracy = []
         for i in range(iterations):
             x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
@@ -37,10 +38,23 @@ class AbstractClassifier:
             current_accuracy = calculate_accuracy(y_test, predictions)
             print(f"Initialisation {i+1}/{iterations}: Accuracy: {current_accuracy}")
             accuracy.append(current_accuracy)
+            self._save_predictions(y_test, predictions, path, i)
 
         stats = (np.mean(accuracy), np.std(accuracy), np.min(accuracy), np.max(accuracy))
-        self._save_file(file, stats)
+        self._save_file(path + "/stats.txt", stats)
         return stats
+
+    @staticmethod
+    def _save_predictions(labels, predictions, path: str, iteration: int):
+        os.makedirs(path + "/" + str(iteration), exist_ok=True)
+        outcome = wrap_labels_with_predictions_to_dataframe(labels, predictions)
+        outcome.to_csv(path + "/" + str(iteration) + "/predictions.csv")
+
+    @staticmethod
+    def _save_config(path, config):
+        os.makedirs(path, exist_ok=True)
+        with open(path + "/config.json", "w+") as file:
+            json.dump(config, file)
 
     @staticmethod
     def _save_file(file: str, stats: tuple):
