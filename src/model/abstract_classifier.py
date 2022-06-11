@@ -1,28 +1,20 @@
 import json
 import os
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 
 from utils import split_into_train_test, wrap_labels_with_predictions_to_dataframe, calculate_accuracy
 
 
-class AbstractClassifier:
+class GenericClassifier:
+    def __init__(self):
+        self.logger = []
+
     def train(self, x, y):
         raise Exception("This is an abstract method")
 
     def predict(self, x) -> list:
         raise Exception("This is an abstract method")
-
-    def get_logger(self) -> list:
-        raise Exception("This is an abstract method")
-
-    def show(self, dataset, train_test_ratio=0.3):
-        x_train, x_test, y_train, y_test = split_into_train_test(dataset.x, dataset.y, train_test_ratio)
-        self.train(x_train, y_train)
-        predictions = self.predict(x_test)
-        return wrap_labels_with_predictions_to_dataframe(y_test, predictions)
 
     def experiment(self, dataset, path, iterations=30, train_test_ratio=0.3):
         accuracy = []
@@ -34,7 +26,7 @@ class AbstractClassifier:
             print(f"Initialisation {i+1}/{iterations}: Accuracy: {current_accuracy}")
             accuracy.append(current_accuracy)
             self._save_predictions(path, i, y_test, predictions)
-            self._save_logger(path, i, self.get_logger())
+            self._save_logger(path, i, self.logger)
 
         stats = (np.mean(accuracy), np.std(accuracy), np.min(accuracy), np.max(accuracy))
         self._save_file(path + "/stats.txt", stats)

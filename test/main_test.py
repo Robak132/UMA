@@ -5,17 +5,16 @@ import pandas as pd
 from dataset import Dataset
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
-from utils import calculate_accuracy
 
 
 def test_decision_tree():
     random.seed(2137)
     np.random.seed(2137)
 
-    xorDataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
+    xor_dataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
 
     tree = DecisionTreeClassifier()
-    tree.train(xorDataset.x, xorDataset.y)
+    tree.train(xor_dataset.x, xor_dataset.y)
     predictions = tree.predict(pd.DataFrame([[0, 0], [0, 1], [1, 1], [1, 0]]))
     assert predictions == [0, 1, 0, 1]
 
@@ -24,7 +23,7 @@ def test_evolutionary_tree():
     random.seed(2137)
     np.random.seed(2137)
 
-    xorDataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
+    xor_dataset = Dataset([[0, 0], [0, 1], [1, 1], [1, 0]], [0, 1, 0, 1])
 
     evolutionary_config = {
         "alpha": 1,
@@ -40,10 +39,6 @@ def test_evolutionary_tree():
     }
     tree = EvolutionaryTreeClassifier(evolutionary_config)
 
-    tree.train(xorDataset.x, xorDataset.y)
+    tree.train(xor_dataset.x, xor_dataset.y)
     predictions = tree.predict(pd.DataFrame([[0, 0], [0, 1], [1, 1], [1, 0]]))
     assert predictions == [0, 1, 0, 1]
-
-
-def test_accuracy():
-    assert calculate_accuracy([0, 1, 0, 1], [0, 1, 0, 1]) == 1.0

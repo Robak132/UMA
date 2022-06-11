@@ -1,15 +1,15 @@
-import threading
 from copy import deepcopy
 
 import numpy as np
 from utils import calculate_accuracy
 
-from model.abstract_classifier import AbstractClassifier
+from model.abstract_classifier import GenericClassifier
 from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
 
 
-class EvolutionaryTreeClassifier(AbstractClassifier):
+class EvolutionaryTreeClassifier(GenericClassifier):
     def __init__(self, config):
+        super().__init__()
         self.alpha = config['alpha']
         self.beta = config['beta']
         self.max_depth = config['max_depth']
@@ -48,13 +48,10 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     def predict(self, x) -> list:
         return self.best_tree.predict(x)
 
-    def get_logger(self) -> list:
-        return self.logger
-
     def initialise(self, x, y, population):
         trees = []
         for i in range(population):
-            tree = EvolutionaryTreeIndividual(x, y, self.division_node_prob, self.mutation_change_type_prob, self.max_depth)
+            tree = EvolutionaryTreeIndividual(x, y, self.division_node_prob, self.max_depth)
             trees.append(tree)
         return trees
 
@@ -65,16 +62,16 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
 
     def mutate_trees(self, trees):
         for tree in trees:
-            tree.mutate()
+            tree.mutate(self.mutation_change_type_prob)
         return trees
 
-    def crossover_trees(self, trees):
+    @staticmethod
+    def crossover_trees(trees):
         for tree in trees:
-            another_parent = np.random.choice(trees)
-            new_subtree = deepcopy(another_parent.get_random_node())
-            node_to_exchange = tree.get_random_node(with_root=False)
-            new_subtree.assign_new_depth(node_to_exchange.depth)
-            tree.exchange_node(node_to_exchange, new_subtree)
+            node = tree.get_random_node(with_root=False)
+            new_subtree = deepcopy(np.random.choice(trees).get_random_node())
+            new_subtree.assign_new_depth(node.depth)
+            node.replace_node(new_subtree)
         return trees
 
     def succession(self, trees, mutated_trees):
