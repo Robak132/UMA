@@ -20,7 +20,20 @@ if __name__ == "__main__":
     lib_classifier.train(x_train, y_train)
     lib_predictions = lib_classifier.predict(x_test)
     lib_accuracy = calculate_accuracy(y_test, lib_predictions)
-    classifier = EvolutionaryTreeClassifier(alpha=100, beta=-0.1, max_generations=1000, division_node_prob=0.5, max_depth=50)
+    evolutionary_config = {
+        "alpha": 100,
+        "beta": -0.1,
+        "max_depth": 50,
+        "max_generations": 1000,
+        "population_size": 50,
+        "crossover": True,
+        "division_node_prob": 0.5,
+        "mutation_change_type_prob": 0.2,
+        "tournament_size": 2,
+        "elite_size": 1
+    }
+
+    classifier = EvolutionaryTreeClassifier(evolutionary_config)
     classifier.train(x_train, y_train)
     predictions = classifier.predict(x_test)
     accuracy = calculate_accuracy(y_test, predictions)

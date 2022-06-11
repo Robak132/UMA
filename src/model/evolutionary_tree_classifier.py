@@ -8,26 +8,30 @@ from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
 
 
 class EvolutionaryTreeClassifier(AbstractClassifier):
-    def __init__(self, alpha=1, beta=-1, max_generations=100, division_node_prob=0.3, max_depth=20, tournament_size=2,
-                 elite_size=1):
-        self.alpha = alpha
-        self.beta = beta
-        self.max_depth = max_depth
-        self.max_generations = max_generations
-        self.division_node_prob = division_node_prob
-        self.tournament_size = tournament_size
-        self.elite_size = elite_size
+    def __init__(self, config):
+        self.alpha = config['alpha']
+        self.beta = config['beta']
+        self.max_depth = config['max_depth']
+        self.max_generations = config['max_generations']
+        self.division_node_prob = config['division_node_prob']
+        self.mutation_change_type_prob = config['mutation_change_type_prob']
+        self.tournament_size = config['tournament_size']
+        self.elite_size = config['elite_size']
+        self.crossover = config['crossover']
+        self.population_size = config['population_size']
 
         self.best_tree = None
 
     def train(self, x, y):
-        trees = self.initialise(x, y)
+        trees = self.initialise(x, y, self.population_size)
         trees = self.score_trees(x, y, trees)
         for generation in range(self.max_generations):
             selected_trees = self.selection(trees)
-            crossovered_trees = self.crossover_trees(selected_trees)
-            mutated_trees = self.mutate_trees(crossovered_trees)
-            # mutated_trees = self.mutate_trees(selected_trees)
+            if self.crossover:
+                crossovered_trees = self.crossover_trees(selected_trees)
+                mutated_trees = self.mutate_trees(crossovered_trees)
+            else:
+                mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
             print(f"Epoch: {generation} - best tree score: {trees[0].score}")
@@ -36,10 +40,10 @@ class EvolutionaryTreeClassifier(AbstractClassifier):
     def predict(self, x) -> list:
         return self.best_tree.predict(x)
 
-    def initialise(self, x, y, population=20):
+    def initialise(self, x, y, population):
         trees = []
         for i in range(population):
-            tree = EvolutionaryTreeIndividual(x, y, division_node_prob=self.division_node_prob, max_depth=self.max_depth)
+            tree = EvolutionaryTreeIndividual(x, y, self.division_node_prob, self.mutation_change_type_prob, self.max_depth)
             trees.append(tree)
         return trees
 
