@@ -4,7 +4,6 @@ from datetime import datetime
 import numpy as np
 
 from dataset import BreastTissueDataset, CarEvaluationDataset, TitanicDataset, WineDataset, RedWineQualityDataset
-*
 from model.decision_tree_classifier import DecisionTreeClassifier
 from model.evolutionary_tree_classifier import EvolutionaryTreeClassifier
 
