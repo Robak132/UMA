@@ -1,12 +1,10 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
 import numpy as np
 import pandas as pd
-
-
-# def calculate_for_all_combinations(parameters):
-#     combinations = get_dictionary_combinations(parameters)
-#     for params in combinations:
-#         model = Model(params)
-#         model.calculate()
 
 
 def get_dictionary_combinations(parameter_list):
@@ -45,10 +43,6 @@ def wrap_labels_with_predictions_to_dataframe(labels, predictions):
 
 def calculate_accuracy(labels, predictions):
     return np.sum(np.array(predictions) == np.array(labels)) / len(labels)
-
-
-def calculate_accuracy_from_dataframe(outcome_dataframe):
-    return np.sum(outcome_dataframe['prediction'] == outcome_dataframe['label']) / len(outcome_dataframe)
 
 
 def format_dict_to_str(dictionary: dict) -> str:

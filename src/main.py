@@ -1,3 +1,8 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
 import random
 import threading
 import time
@@ -59,7 +64,7 @@ if __name__ == "__main__":
 
     meta_config = {
         "train_test_ratio": 0.3,
-        "iterations": 5
+        "iterations": 25
     }
     configs = {
         "alpha": [100],

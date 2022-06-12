@@ -1,9 +1,13 @@
-from copy import deepcopy
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
 
+from copy import deepcopy
 import numpy as np
 from utils import calculate_accuracy
 
-from model.abstract_classifier import GenericClassifier
+from model.generic_classifier import GenericClassifier
 from model.evolutionary_tree_individual import EvolutionaryTreeIndividual
 
 

@@ -1,3 +1,8 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
 import json
 import os
 import numpy as np

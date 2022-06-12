@@ -1,7 +1,12 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
 from sklearn import tree
 from utils import calculate_accuracy
 
-from model.abstract_classifier import GenericClassifier
+from model.generic_classifier import GenericClassifier
 
 
 class DecisionTreeClassifier(GenericClassifier):

@@ -1,3 +1,8 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
 import random
 import numpy as np
 import pandas as pd

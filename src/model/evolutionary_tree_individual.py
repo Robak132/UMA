@@ -1,5 +1,9 @@
-from enum import Enum
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
 
+from enum import Enum
 import numpy as np
 from utils import calculate_accuracy
 

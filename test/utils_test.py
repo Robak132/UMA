@@ -1,3 +1,9 @@
+"""
+Jakub Robaczewski, Michał Matak
+UMA 2022
+"""
+
+
 from utils import calculate_accuracy
 
 
