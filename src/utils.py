@@ -20,25 +20,12 @@ def get_dictionary_combinations(parameter_list):
                 some_list in get_dictionary_combinations(popped_dictionary.copy())]
 
 
-def get_combinations(parameter_list):
-    if len(parameter_list) == 1:
-        return [[parameter_value] for parameter_value in parameter_list[0]]
-    else:
-        return [[parameter_value, *some_list] for parameter_value in parameter_list[0] for some_list in
-                get_combinations(parameter_list[1:])]
-
-
-def get_all_combinations(parameters_lists):
-    combinations = []
-    for one_list in parameters_lists:
-        for number in one_list:
-            combinations.append([number])
-
-    for number in parameters_lists[0]:
-        for number2 in parameters_lists[1]:
-            for number3 in parameters_lists[2]:
-                combinations.append([number, number2, number3])
-    return combinations
+def merge_list_of_dicts_into_one_dict(lists):
+    merged_dict = {}
+    for dictionary in lists:
+        for key in dictionary.keys():
+            merged_dict[key] = dictionary[key]
+    return merged_dict
 
 
 def split_into_train_test(x, y, test_ratio):

@@ -36,7 +36,8 @@ class EvolutionaryTreeClassifier(GenericClassifier):
                 mutated_trees = self.mutate_trees(selected_trees)
             trees = self.succession(trees, mutated_trees)
             trees = self.score_trees(x, y, trees)
-            print(f"Epoch: {generation} - best tree score: {trees[0].score}")
+            if generation % 25 == 0:
+                print(f"Epoch: {generation} - best tree score: {trees[0].score}")
             self.logger.append({
                 "epoch": generation,
                 "score": trees[0].score,
